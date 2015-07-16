@@ -1,0 +1,27 @@
+{
+  "name": "decision-tree-shell",
+  "version": "1.0.0",
+  "description": "A Decision Tree executor that uses decision modules to decide pathways. Can accept binary or arbitrary decision modules.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wunderlink/operational-decision-tree.git"
+  },  
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node test/index.js",
+    "example-binary": "node example/binary-tree.js"
+  },
+  "keywords": [
+    "decision",
+    "tree"
+  ],
+  "author": "Tyler Bushnell <wunderlinks@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "tape": "^4.0.0"
+  }
+}
