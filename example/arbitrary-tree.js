@@ -6,20 +6,18 @@ var DTS = require('../index.js')
 var treeData = require('./arbitrary-tree.json')
 
 
-
-var	conditionPercent = function (opts) {
-  this.random = Math.floor(Math.random()*100);
-}
-
-conditionPercent.prototype.run = function (opts, data, cb) {
-  if (eval(data.age+opts.operator+opts.value)){
-    return cb(null, true)
-  }
-  return cb(null, false)
-}
-
 var conditions = {
-  conditionPercent: conditionPercent,
+  conditionPercent: function (opts, data, cb) {
+    var threshold = 0 
+    for (var i in opts.split) {
+      console.log("V", i, opts.split[i])
+      threshold += opts.split[i]
+      if (data.random < threshold) {
+        return cb(null, i)
+      }   
+    }   
+    return cb(new Error('conditionPercent did not find a match!'))
+  },
 	conditionAge: function (opts, data, cb) {
     if (eval(data.age+opts.operator+opts.value)){
       return cb(null, true)
@@ -35,28 +33,19 @@ var conditions = {
 }
 
 var opts = {
-  conditions: conditions,
-  decider: function (result) {
-    if (result) {
-      return 1
-    } else {
-      return 0
-    }
-  }
+  conditions: conditions
 }
 
 var person = {
   name: "Bob",
   age: 37,
-  nationality: 'US'
+  nationality: 'US',
+  random: Math.floor(Math.random()*100)
 }
 
-
 var DecisionTree = new DTS(opts)
-DecisionTree.countConditions(treeData, function(err, conditionCount) {
-  console.log("CONDITIONS", conditionCount)
-})
 DecisionTree.run(treeData, person, function (err, result) {
   if (err) console.error("ERROR", err)
   console.log("RESULT", result)
 })
+

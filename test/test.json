@@ -1,0 +1,48 @@
+
+{
+  "condition": {
+    "name": "conditionAsync",
+    "opts": {}
+  },  
+  "paths": [
+    {
+      "condition": {
+        "name": "conditionPercent",
+        "opts": {
+          "split": [
+            30,
+            20,
+            40,
+            10
+          ]
+        }
+      },
+      "paths": [
+        {"result": "Leaf A"},
+        {"result": "Leaf B"},
+        {"result": "Leaf C"},
+        {"result": "Leaf D"}
+      ]
+    },
+    {
+      "condition": {
+        "name": "conditionAsync",
+        "opts": {}
+      },
+      "paths": [
+        {
+          "condition": {
+            "name": "conditionAsync",
+            "opts": {}
+          },  
+          "paths": [
+            {"result": "Leaf E"},
+            {"result": "Leaf F"}
+          ]
+        },
+        {"result": "Leaf G"}
+      ]
+    }
+  ]
+}
+
