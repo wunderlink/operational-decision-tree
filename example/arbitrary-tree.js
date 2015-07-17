@@ -6,31 +6,7 @@ var DTS = require('../index.js')
 var treeData = require('./arbitrary-tree.json')
 
 
-var conditions = {
-  conditionPercent: function (opts, data, cb) {
-    var threshold = 0 
-    for (var i in opts.split) {
-      console.log("V", i, opts.split[i])
-      threshold += opts.split[i]
-      if (data.random < threshold) {
-        return cb(null, i)
-      }   
-    }   
-    return cb(new Error('conditionPercent did not find a match!'))
-  },
-	conditionAge: function (opts, data, cb) {
-    if (eval(data.age+opts.operator+opts.value)){
-      return cb(null, true)
-    }
-    return cb(null, false)
-  },
-	conditionCountry: function (opts, data, cb) {
-    if (data.nationality === opts.value) {
-      return cb(null, true)
-    }
-    return cb(null, false)
-  }
-}
+var conditions = require('./conditions.js')
 
 var opts = {
   conditions: conditions

@@ -4,21 +4,7 @@
 var DTS = require('../index.js')
 
 var treeData = require('./binary-tree.json')
-
-var conditions = {
-	conditionAge: function (opts, data, cb) {
-    if (eval(data.age+opts.operator+opts.value)){
-      return cb(null, true)
-    }
-    return cb(null, false)
-  },
-	conditionCountry: function (opts, data, cb) {
-    if (data.nationality === opts.value) {
-      return cb(null, true)
-    }
-    return cb(null, false)
-  }
-}
+var conditions = require('./conditions.js')
 
 var opts = {
   conditions: conditions,

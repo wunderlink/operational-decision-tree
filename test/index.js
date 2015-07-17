@@ -5,42 +5,7 @@ var tape = require('tape')
 var DTS = require('../index.js')
 
 var sampleTree = require('./test.json')
-
-var conditions = { 
-  conditionBasic: function (opts, data, cb) {
-    if (data.value > 0) {
-      return cb(null, true)
-    }   
-    return cb(null, false)
-  },
-  conditionOpts: function (opts, data, cb) {
-    if (opts.value > data.value) {
-      return cb(null, true)
-    }   
-    return cb(null, false)
-  },
-  conditionAge: function (opts, data, cb) {
-    if (eval(data.age+opts.operator+opts.value)){
-      return cb(null, true)
-    }   
-    return cb(null, false)
-  },
-  conditionAsync: function (opts, data, cb) {
-    setTimeout( function () {
-      return cb(null, false)
-    }, 1000 )
-  },
-  conditionPercent: function (opts, data, cb) {
-    threshold = 0
-    for (var i in opts.split) {
-      threshold += opts.split[i]
-      if (data.random < threshold) {
-        return cb(null, i)
-      }
-    }
-    return cb(new Error('conditionPercent did not find a match!'))
-  }
-}
+var conditions = require('./conditions.js')
 
 
 tape('Test Basic Condition', function (t) {
@@ -162,16 +127,9 @@ tape('Test countConditions', function (t) {
 
 tape('Test conditionAsync', function (t) {
   var DT = new DTS({conditions:conditions})
-  DT.run(sampleTree, {value:64}, function(err, result) {
-    t.equal('Leaf C', result.result)
-    t.end()
-  })
-})
-
-tape('Test conditionAsync', function (t) {
-  var DT = new DTS({conditions:conditions})
   DT.run(sampleTree, {random:64}, function(err, result) {
     t.equal('Leaf C', result.result)
     t.end()
   })
 })
+
