@@ -24,7 +24,7 @@ module.exports = {
     }, 1000 )
   },  
   conditionPercent: function (opts, data, cb) {
-    threshold = 0 
+    var threshold = 0 
     for (var i in opts.split) {
       threshold += opts.split[i]
       if (data.random < threshold) {
