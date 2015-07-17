@@ -1,0 +1,56 @@
+
+{
+  "condition": {
+    "name": "conditionAge",
+    "opts": {
+      "operator": ">",
+      "value": 40
+    }   
+  },  
+  "paths": [
+    {
+      "condition": {
+        "name": "conditionPercent",
+        "opts": {
+          "split": [
+            30,
+            20,
+            40,
+            10
+          ]
+        }
+      },
+      "paths": [
+        {"result": "Leaf A: Aged under 40 and random less than 30"},
+        {"result": "Leaf B: Aged under 40 and random between 30 and 49"},
+        {"result": "Leaf C: Aged under 40 and random between 50 and 89"},
+        {"result": "Leaf D: Aged under 40 and random between 90 and 99"}
+      ]
+    },
+    {
+      "condition": {
+        "name": "conditionCountry",
+        "opts": {
+          "value": "US"
+        }
+      },
+      "paths": [
+        {
+          "condition": {
+            "name": "conditionAge",
+            "opts": {
+              "operator": "<",
+              "value": 60
+            }   
+          },  
+          "paths": [
+            {"result": "Leaf E: Over 60 and not from US"},
+            {"result": "Leaf F: Under 60 and not from US"}
+          ]
+        },
+        {"result": "Leaf G: Over 40 and from US"}
+      ]
+    }
+  ]
+}
+

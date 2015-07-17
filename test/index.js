@@ -106,3 +106,29 @@ tape('Test runNode', function (t) {
     })
   })
 })
+
+tape('Test defaultDecider', function (t) {
+  var DT = new DTS({conditions:conditions})
+
+  var result
+
+  result = DT.defaultDecider(true)
+  t.equal(result, 1, 'Decider properly handles "true"')
+
+  result = DT.defaultDecider(false)
+  t.equal(result, 0, 'Decider properly handles "false"')
+
+  result = DT.defaultDecider(1)
+  t.equal(result, 1, 'Decider properly handles "1"')
+
+  result = DT.defaultDecider(0)
+  t.equal(result, 0, 'Decider properly handles "0"')
+
+  result = DT.defaultDecider(2)
+  t.equal(result, 2, 'Decider properly handles "2"')
+
+  result = DT.defaultDecider('Oops')
+  t.equal(result instanceof Error, new Error() instanceof Error, 'Decider properly returns an error on strings')
+
+  t.end()
+})

@@ -3,9 +3,23 @@
 
 var DTS = require('../index.js')
 
-var treeData = require('./binary-tree.json')
+var treeData = require('./arbitrary-tree.json')
+
+
+
+var	conditionPercent = function (opts) {
+  this.random = Math.floor(Math.random()*100);
+}
+
+conditionPercent.prototype.run = function (opts, data, cb) {
+  if (eval(data.age+opts.operator+opts.value)){
+    return cb(null, true)
+  }
+  return cb(null, false)
+}
 
 var conditions = {
+  conditionPercent: conditionPercent,
 	conditionAge: function (opts, data, cb) {
     if (eval(data.age+opts.operator+opts.value)){
       return cb(null, true)
@@ -39,6 +53,9 @@ var person = {
 
 
 var DecisionTree = new DTS(opts)
+DecisionTree.countConditions(treeData, function(err, conditionCount) {
+  console.log("CONDITIONS", conditionCount)
+})
 DecisionTree.run(treeData, person, function (err, result) {
   if (err) console.error("ERROR", err)
   console.log("RESULT", result)
