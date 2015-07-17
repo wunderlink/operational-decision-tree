@@ -18,6 +18,12 @@ module.exports = {
     }   
     return cb(null, false)
   },  
+  conditionCountry: function (opts, data, cb) {
+    if (data.nationality === opts.value) {
+      return cb(null, true)
+    }
+    return cb(null, false)
+  },
   conditionAsync: function (opts, data, cb) {
     setTimeout( function () {
       return cb(null, false)

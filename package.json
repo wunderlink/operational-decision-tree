@@ -14,7 +14,8 @@
   "scripts": {
     "test": "node test/index.js",
     "example-binary": "node example/binary-tree.js",
-    "example-arbitrary": "node example/arbitrary-tree.js"
+    "example-arbitrary": "node example/arbitrary-tree.js",
+    "example-multi": "node example/multi-condition-nodes.js"
   },
   "keywords": [
     "decision",

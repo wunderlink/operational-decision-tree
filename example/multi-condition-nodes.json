@@ -1,0 +1,47 @@
+
+{
+  "condition": {
+    "name": "conditionAge",
+    "opts": {
+      "operator": ">",
+      "value": 70
+    }
+  },
+  "paths": [
+    {
+      "conditions": [
+        {
+          "name": "conditionAge",
+          "opts": {
+            "operator": ">",
+            "value": 18
+          }
+        },
+        {
+          "name": "conditionAge",
+          "opts": {
+            "operator": "<",
+            "value": 60
+          }
+        }
+      ],
+      "paths": [
+        {"result": "Leaf A: Minor or senior"},
+        {"result": "Leaf B: Adult"}
+      ]
+    },
+    {
+      "condition": {
+        "name": "conditionCountry",
+        "opts": {
+          "value": "US"
+        }
+      },
+      "paths": [
+        {"result": "Leaf C: Over 70 and not from US"},
+        {"result": "Leaf D: Over 70 and from the US"}
+      ]
+    }
+  ]
+}
+
