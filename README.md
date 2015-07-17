@@ -25,4 +25,4 @@ Depending on the tree data you provide, the executor supports any combination of
 
 ## Multi-Condition Nodes ##
 
-Multi-condition nodes are useful for reducing the number of nodes needed for specific outcomes. They work well with binary trees, since the decision maker can say something like "all conditions must return 'true' in order to take the 'true' path. Otherwise take the 'false' path." However, when paired with arbitrary conditions, you may run into some problems depending on how your arbitrary conditions are setup.
+Multi-condition nodes are useful for reducing the number of nodes needed for specific outcomes. They work well with binary trees, since the decision maker can resolve them with an && operation. However, when paired with arbitrary conditions, you may run into some problems depending on how your arbitrary conditions are setup.
