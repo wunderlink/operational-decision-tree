@@ -7,7 +7,7 @@
       "value": 70
     }
   },
-  "paths": [
+  "branches": [
     {
       "conditions": [
         {
@@ -25,7 +25,7 @@
           }
         }
       ],
-      "paths": [
+      "branches": [
         {"result": "Leaf A: Minor or senior"},
         {"result": "Leaf B: Adult"}
       ]
@@ -37,7 +37,7 @@
           "value": "US"
         }
       },
-      "paths": [
+      "branches": [
         {"result": "Leaf C: Over 70 and not from US"},
         {"result": "Leaf D: Over 70 and from the US"}
       ]

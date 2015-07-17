@@ -7,7 +7,7 @@
       "value": 40
     }   
   },  
-  "paths": [
+  "branches": [
     {
       "condition": {
         "name": "conditionPercent",
@@ -20,7 +20,7 @@
           ]
         }
       },
-      "paths": [
+      "branches": [
         {"result": "Leaf A: Aged under 40 and random less than 30"},
         {"result": "Leaf B: Aged under 40 and random between 30 and 49"},
         {"result": "Leaf C: Aged under 40 and random between 50 and 89"},
@@ -34,7 +34,7 @@
           "value": "US"
         }
       },
-      "paths": [
+      "branches": [
         {
           "condition": {
             "name": "conditionAge",
@@ -43,7 +43,7 @@
               "value": 60
             }   
           },  
-          "paths": [
+          "branches": [
             {"result": "Leaf E: Over 60 and not from US"},
             {"result": "Leaf F: Under 60 and not from US"}
           ]

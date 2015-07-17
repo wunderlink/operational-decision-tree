@@ -7,7 +7,7 @@
       "value": 40
     }
   },
-  "paths": [
+  "branches": [
     {
       "condition": {
         "name": "conditionAge",
@@ -16,7 +16,7 @@
           "value": 20
         }
       },
-      "paths": [
+      "branches": [
         {"result": "Leaf A: Aged between 0 and 20"},
         {"result": "Leaf B: Aged between 21 and 39"}
       ]
@@ -28,7 +28,7 @@
           "value": "US"
         }
       },
-      "paths": [
+      "branches": [
         {"result": "Leaf C: Over 40 and not from US"},
         {"result": "Leaf D: Over 40 and from the US"}
       ]

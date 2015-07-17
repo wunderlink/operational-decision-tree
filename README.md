@@ -20,7 +20,7 @@ Several things are required to use an ODT:
 
 Depending on the tree data you provide, the executor supports any combination of the following:
 * Binary conditions (conditions that output either true or false)
-* Arbitrary conditions (conditions that output an integer. In other words, more than two outcome pathways are possible)
+* Arbitrary conditions (conditions that output an integer. In other words, more than two outcome branchways are possible)
 * Multi-condition nodes (a single decision node can run multiple conditions)
 
 ## Example ##
@@ -35,7 +35,7 @@ binary-tree.json
       "value": 40
     }   
   },  
-  "paths": [
+  "branches": [
     {   
       "condition": {
         "name": "conditionAge",
@@ -44,7 +44,7 @@ binary-tree.json
           "value": 20
         }   
       },  
-      "paths": [
+      "branches": [
         {"result": "Leaf A: Aged between 0 and 20"},
         {"result": "Leaf B: Aged between 21 and 39"}
       ]   
@@ -56,7 +56,7 @@ binary-tree.json
           "value": "US"
         }   
       },  
-      "paths": [
+      "branches": [
         {"result": "Leaf C: Over 40 and not from US"},
         {"result": "Leaf D: Over 40 and from the US"}
       ]   

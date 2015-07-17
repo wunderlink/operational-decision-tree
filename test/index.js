@@ -69,7 +69,7 @@ tape('Test runNode', function (t) {
         value: 20
       }   
     },  
-    paths: [
+    branches: [
       {   
         result: "Leaf A: Aged under 20" 
       },  

@@ -4,7 +4,7 @@
     "name": "conditionAsync",
     "opts": {}
   },  
-  "paths": [
+  "branches": [
     {
       "condition": {
         "name": "conditionPercent",
@@ -17,7 +17,7 @@
           ]
         }
       },
-      "paths": [
+      "branches": [
         {"result": "Leaf A"},
         {"result": "Leaf B"},
         {"result": "Leaf C"},
@@ -29,13 +29,13 @@
         "name": "conditionAsync",
         "opts": {}
       },
-      "paths": [
+      "branches": [
         {
           "condition": {
             "name": "conditionAsync",
             "opts": {}
           },  
-          "paths": [
+          "branches": [
             {"result": "Leaf E"},
             {"result": "Leaf F"}
           ]
