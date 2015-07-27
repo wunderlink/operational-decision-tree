@@ -4,10 +4,9 @@
 var DTS = require('../index.js')
 
 var treeData = require('./binary-tree.json')
-var conditions = require('./conditions.js')
 
 var opts = {
-  conditions: conditions,
+  // custom decider
   decider: function (result) {
     if (result) {
       return 1

@@ -1,5 +1,5 @@
 {
-  "name": "decision-tree-shell",
+  "name": "operational-decision-tree",
   "version": "1.1.1",
   "description": "A Decision Tree executor that uses decision modules to decide pathways. Can accept binary or arbitrary decision modules.",
   "main": "index.js",

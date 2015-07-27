@@ -2,8 +2,9 @@
 {
   "condition": {
     "name": "conditionAge",
-    "opts": {
-      "operator": ">",
+    "property": "age",
+    "comparison": {
+      "operation": ">",
       "value": 40
     }   
   },  
@@ -11,14 +12,25 @@
     {
       "condition": {
         "name": "conditionPercent",
-        "opts": {
-          "split": [
-            30,
-            20,
-            40,
-            10
-          ]
-        }
+        "property": "random",
+        "comparisons": [
+          {
+            "operation": "<",
+            "value": 30
+          },
+          {
+            "operation": "<",
+            "value": 50
+          },
+          {
+            "operation": "<",
+            "value": 90
+          },
+          {
+            "operation": "<",
+            "value": 100
+          }
+        ]
       },
       "branches": [
         {"result": "Leaf A: Aged under 40 and random less than 30"},
@@ -30,16 +42,19 @@
     {
       "condition": {
         "name": "conditionCountry",
-        "opts": {
-          "value": "US"
+        "property": "nationality",
+        "comparison": {
+          "operation": "in",
+          "value": ["US", "CA"]
         }
       },
       "branches": [
         {
           "condition": {
             "name": "conditionAge",
-            "opts": {
-              "operator": "<",
+            "property": "age",
+            "comparison": {
+              "operation": "<",
               "value": 60
             }   
           },  

@@ -9,7 +9,7 @@ var conditions = require('./conditions.js')
 
 
 tape('Test Basic Condition', function (t) {
-  var DT = new DTS({conditions:conditions})
+  var DT = new DTS()
 
   var subject = {
     value: 1
@@ -17,7 +17,11 @@ tape('Test Basic Condition', function (t) {
 
   var condition = {
     name: 'conditionBasic',
-    opts: {}
+    property: 'value',
+    comparison: {
+      operation: '>',
+      value: 0
+    }
   }
 
   DT.testCondition(condition, subject, function (err, result) {
@@ -31,22 +35,24 @@ tape('Test Basic Condition', function (t) {
 })
 
 tape('Test Condition With Opts', function (t) {
-  var DT = new DTS({conditions:conditions})
+  var DT = new DTS()
 
   var subject = {
-    value: 1
+    somevalue: 1
   }
 
   var condition = {
     name: 'conditionOpts',
-    opts: {
+    property: 'somevalue',
+    comparison: {
+      operation: '<',
       value: 2
     }
   }
 
   DT.testCondition(condition, subject, function (err, result) {
     t.ok(result, 'Condition with opts returns true')
-    subject.value = 3
+    subject.somevalue = 3
     DT.testCondition(condition, subject, function (err, result) {
       t.notOk(result, 'Condition with opts returns false')
       t.end()
@@ -55,7 +61,7 @@ tape('Test Condition With Opts', function (t) {
 })
 
 tape('Test runNode', function (t) {
-  var DT = new DTS({conditions:conditions})
+  var DT = new DTS()
 
   var subject = {
     age: 37
@@ -64,8 +70,9 @@ tape('Test runNode', function (t) {
   var node = {
     condition: {
       name: "conditionAge",
-      opts: {
-        operator: ">",
+      property: 'age',
+      comparison: {
+        operation: ">",
         value: 20
       }   
     },  
@@ -90,7 +97,7 @@ tape('Test runNode', function (t) {
 })
 
 tape('Test defaultDecider', function (t) {
-  var DT = new DTS({conditions:conditions})
+  var DT = new DTS()
 
   var result
 
@@ -117,18 +124,10 @@ tape('Test defaultDecider', function (t) {
 
 
 tape('Test countConditions', function (t) {
-  var DT = new DTS({conditions:conditions})
+  var DT = new DTS()
   DT.countConditions(sampleTree, function(err, conditionCount) {
     t.equal(1, conditionCount.conditionPercent, 'countConditions returned the correct number of "conditionPercent"')
     t.equal(3, conditionCount.conditionAsync, 'countConditions returned the correct number of "conditionAsync"')
-    t.end()
-  })
-})
-
-tape('Test conditionAsync', function (t) {
-  var DT = new DTS({conditions:conditions})
-  DT.run(sampleTree, {random:64}, function(err, result) {
-    t.equal('Leaf C', result.result)
     t.end()
   })
 })

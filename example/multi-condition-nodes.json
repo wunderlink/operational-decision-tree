@@ -2,7 +2,8 @@
 {
   "condition": {
     "name": "conditionAge",
-    "opts": {
+    "property": "age",
+    "comparison": {
       "operator": ">",
       "value": 70
     }
@@ -12,14 +13,16 @@
       "conditions": [
         {
           "name": "conditionAge",
-          "opts": {
+          "property": "age",
+          "comparison": {
             "operator": ">",
             "value": 18
           }
         },
         {
           "name": "conditionAge",
-          "opts": {
+          "property": "age",
+          "comparison": {
             "operator": "<",
             "value": 60
           }
@@ -33,7 +36,8 @@
     {
       "condition": {
         "name": "conditionCountry",
-        "opts": {
+        "property": "nationality",
+        "comparison": {
           "value": "US"
         }
       },
