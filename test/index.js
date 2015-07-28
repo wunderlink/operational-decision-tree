@@ -5,7 +5,6 @@ var tape = require('tape')
 var DTS = require('../index.js')
 
 var sampleTree = require('./test.json')
-var conditions = require('./conditions.js')
 
 
 tape('Test Binary Condition', function (t) {
