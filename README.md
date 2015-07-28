@@ -12,10 +12,21 @@ ODT is not designed to be a machine learning decision tree. By all means though,
 
 ODT is a decision tree executor designed to run decision trees that are human-built and managed. Hence, it has features targetted at reducing the total number of nodes needed to achieve the desired leaf nodes.
 
+For each condition, ODT compares the subject data to the tree data based on the "operation" parameter you pass in the tree. Supported operations are:
+* > subject value is greater than tree comparison value
+* >= subject value is greater than or equal to tree comparison value
+* < subject value is less than tree comparison value
+* <= subject value is less than or equal to tree comparison value
+* == subject value is equal to tree comparison value
+* === subject value is definitely equal to tree comparison value
+* != subject value is not equal to tree comparison value
+* !== subject value is definitely not equal to tree comparison value
+* in subject value is present in tree comparison value (tree comparison value must be an array)
+* nin subject value is not present in tree comparison value (tree comparison value must be an array)
+
 Several things are required to use an ODT:
 * The executor (this package)
 * The tree data (provided by you)
-* The decision condition functions (provided by you)
 * The decision maker (a default decision maker is included in this package, but you can insert your own if need be)
 
 Depending on the tree data you provide, the executor supports any combination of the following:
@@ -30,8 +41,9 @@ binary-tree.json
 {
   "condition": {
     "name": "conditionAge",
-    "opts": {
-      "operator": ">",
+    "property": "age",
+    "comparison": {
+      "operation": ">",
       "value": 40
     }   
   },  
@@ -39,8 +51,9 @@ binary-tree.json
     {   
       "condition": {
         "name": "conditionAge",
-        "opts": {
-          "operator": ">",
+        "property": "age",
+        "comparison": {
+          "operation": ">",
           "value": 20
         }   
       },  
@@ -52,13 +65,15 @@ binary-tree.json
     {   
       "condition": {
         "name": "conditionCountry",
-        "opts": {
-          "value": "US"
+        "property": "nationality",
+        "comparison": {
+          "operation": "in",
+          "value": ["US", "CA"]
         }   
       },  
       "branches": [
-        {"result": "Leaf C: Over 40 and not from US"},
-        {"result": "Leaf D: Over 40 and from the US"}
+        {"result": "Leaf C: Over 40 and not from North America"},
+        {"result": "Leaf D: Over 40 and from the North America"}
       ]   
     }   
   ]
@@ -70,30 +85,6 @@ var ODT = require('operational-decision-tree')
 
 var treeData = require('./binary-tree.json')
 
-var opts = { 
-  conditions: {
-    conditionAge: function (opts, data, cb) {
-      if (eval(data.age+opts.operator+opts.value)){
-        return cb(null, true)
-      }   
-      return cb(null, false)
-    },
-    conditionCountry: function (opts, data, cb) {
-      if (data.nationality === opts.value) {
-        return cb(null, true)
-      }   
-      return cb(null, false)
-    }
-  },
-  decider: function (result) {
-    if (result) {
-      return 1
-    } else {
-      return 0
-    }   
-  }
-}
-
 var person = { 
   name: "Bob",
   age: 37, 
@@ -101,7 +92,7 @@ var person = {
 }
 
 
-var DecisionTree = new ODT(opts)
+var DecisionTree = new ODT()
 DecisionTree.run(treeData, person, function (err, result) {
   if (err) console.error("ERROR", err)
   console.log("RESULT", result)
