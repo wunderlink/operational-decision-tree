@@ -8,7 +8,7 @@ var sampleTree = require('./test.json')
 var conditions = require('./conditions.js')
 
 
-tape('Test Basic Condition', function (t) {
+tape('Test Binary Condition', function (t) {
   var DT = new DTS()
 
   var subject = {
@@ -16,7 +16,7 @@ tape('Test Basic Condition', function (t) {
   }
 
   var condition = {
-    name: 'conditionBasic',
+    name: 'conditionBinary',
     property: 'value',
     comparison: {
       operation: '>',
@@ -25,11 +25,51 @@ tape('Test Basic Condition', function (t) {
   }
 
   DT.testCondition(condition, subject, function (err, result) {
-    t.ok(result, 'Basic condition returns true')
+    t.equal(result, 1, 'Binary condition returns 1')
     subject.value = 0
     DT.testCondition(condition, subject, function (err, result) {
-      t.notOk(result, 'Basic condition returns false')
+      t.equal(result, 0, 'Binary condition returns 0')
       t.end()
+    })
+  })
+})
+
+tape('Test Arbitrary Condition', function (t) {
+  var DT = new DTS()
+
+  var subject = {
+    random: 85
+  }
+
+  var condition = {
+    name: 'conditionArbitrary',
+    property: 'random',
+    comparisons: [
+      {
+      operation: '<',
+      value: 30
+      },
+      {
+      operation: '<',
+      value: 50
+      },
+      {
+      operation: '<',
+      value: 100
+      }
+    ]
+  }
+
+  DT.testCondition(condition, subject, function (err, result) {
+    t.equal(result, 2, 'Arbitrary condition returns 2')
+    subject.random = 35
+    DT.testCondition(condition, subject, function (err, result) {
+      t.equal(result, 1, 'Arbitrary condition returns 1')
+      subject.random = 5
+      DT.testCondition(condition, subject, function (err, result) {
+        t.equal(result, 0, 'Arbitrary condition returns 0')
+        t.end()
+      })
     })
   })
 })
@@ -131,4 +171,5 @@ tape('Test countConditions', function (t) {
     t.end()
   })
 })
+
 
