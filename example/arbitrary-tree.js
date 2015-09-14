@@ -24,7 +24,7 @@ var conditionOpts = {
     },
     run: function (subjectData, cb) {
       console.log("RUN!")
-      var result = 1
+      var result = 2
       cb(null, result)
     }
   }
