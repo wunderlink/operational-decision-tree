@@ -16,7 +16,21 @@ var person = {
   }
 }
 
-var DecisionTree = new DTS()
+var conditionOpts = {
+  percentageSplit: {
+    hit: function (subjectData, cb) {
+      console.log("HIT!")
+      cb(null)
+    },
+    run: function (subjectData, cb) {
+      console.log("RUN!")
+      var result = 1
+      cb(null, result)
+    }
+  }
+}
+
+var DecisionTree = new DTS({conditionOpts:conditionOpts})
 DecisionTree.run(treeData, person, function (err, result) {
   if (err) console.error("ERROR", err)
   console.log("RESULT", result)
