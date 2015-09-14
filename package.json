@@ -1,6 +1,6 @@
 {
   "name": "operational-decision-tree",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A Decision Tree executor that uses decision modules to decide pathways. Can accept binary or arbitrary decision modules.",
   "main": "index.js",
   "repository": {
