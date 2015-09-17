@@ -1,40 +1,38 @@
 
 {
-  "condition": {
-    "name": "conditionAge",
-    "comparison": {
+  "decisions": [
+    [{
       "property": "age",
       "operation": ">",
       "value": 40
-    }   
-  },  
+    }]
+  ],
   "branches": [
     {
-      "condition": {
-        "name": "percentageSplit",
-        "comparisons": [
-          {
-            "property": "random",
-            "operation": "<",
-            "value": 30
-          },
-          {
-            "property": "random",
-            "operation": "<",
-            "value": 50
-          },
-          {
-            "property": "random",
-            "operation": "<",
-            "value": 90
-          },
-          {
-            "property": "random",
-            "operation": "<",
-            "value": 100
-          }
-        ]
-      },
+      "runOnHit": [
+      ],
+      "decisions": [
+        [{
+          "property": "random",
+          "operation": "<",
+          "value": 30
+        }],
+        [{
+          "property": "random",
+          "operation": "<",
+          "value": 50
+        }],
+        [{
+          "property": "random",
+          "operation": "<",
+          "value": 90
+        }],
+        [{
+          "property": "random",
+          "operation": "<",
+          "value": 100
+        }]
+      ],
       "branches": [
         {"result": "Leaf A: Aged under 40 and random less than 30"},
         {"result": "Leaf B: Aged under 40 and random between 30 and 49"},
@@ -43,27 +41,32 @@
       ]
     },
     {
-      "condition": {
-        "name": "conditionCountry",
-        "property": "nationality",
-        "comparison": {
+      "decisions": [
+        [{
+          "property": "nationality",
           "operation": "in",
           "value": ["US", "CA"]
-        }
-      },
+        }],
+      ],
       "branches": [
         {
-          "condition": {
-            "name": "conditionAge",
-            "property": "age",
-            "comparison": {
+          "decisions": [
+            [
+              {
+              "property": "age",
               "operation": "<",
               "value": 60
-            }   
-          },  
+              },
+              {
+              "property": "gender",
+              "operation": "==",
+              "value": "male"
+              }
+            ]
+          ],
           "branches": [
-            {"result": "Leaf E: Over 60 and not from US"},
-            {"result": "Leaf F: Under 60 and not from US"}
+            {"result": "Leaf E: Over 60 or female, and not from US"},
+            {"result": "Leaf F: Male under 60 and not from US"}
           ]
         },
         {"result": "Leaf G: Over 40 and from US"}
