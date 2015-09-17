@@ -46,7 +46,7 @@
           "property": "nationality",
           "operation": "in",
           "value": ["US", "CA"]
-        }],
+        }]
       ],
       "branches": [
         {
