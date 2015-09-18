@@ -19,6 +19,11 @@ var conditionOpts = {
       var random = Math.floor(Math.random()*100)
       cb(null, random)
     }
+  },
+  runOnHit: {
+    howOld: function (node, subjectData) {
+      console.log("Age is: "+subjectData.age)
+    }
   }
 }
 
