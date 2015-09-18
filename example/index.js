@@ -14,7 +14,7 @@ var person = {
 }
 
 var conditionOpts = {
-  populate: {
+  populateFunctions: {
     random: function (node, comparisions, comparison, subjectData, cb) {
       var random = Math.floor(Math.random()*100)
       cb(null, random)
@@ -23,9 +23,10 @@ var conditionOpts = {
 }
 
 var DecisionTree = new DTS(conditionOpts)
-DecisionTree.run(treeData, person, function (err, result) {
+DecisionTree.run(treeData, person, {}, function (err, result, populated) {
   if (err) console.error("ERROR", err)
   console.log("RESULT", result)
   console.log("PERSON", person)
+  console.log("POPULATED", populated)
 })
 
