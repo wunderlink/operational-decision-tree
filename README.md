@@ -4,82 +4,11 @@
 
 This package is brand new. I have yet to use it for the project I built it for. Consequently, this project may change soon.
 
-## What it's not ##
-
-ODT is not designed to be a machine learning decision tree. By all means though, use it how you want.
-
 ## What it is ##
 
-ODT is a decision tree executor designed to run decision trees that are human-built and managed. Hence, it has features targetted at reducing the total number of nodes needed to achieve the desired leaf nodes.
+ODT is a decision tree executor designed to run decision trees that are human-built and managed. You give it a tree object and a subject object. It then runs the tree against the subject and passes back the leaf node along with any data generated along the way.
 
-For each condition, ODT compares the subject data to the tree data based on the "operation" parameter you pass in the tree. Supported operations are:
-* > subject value is greater than tree comparison value
-* >= subject value is greater than or equal to tree comparison value
-* < subject value is less than tree comparison value
-* <= subject value is less than or equal to tree comparison value
-* == subject value is equal to tree comparison value
-* === subject value is definitely equal to tree comparison value
-* != subject value is not equal to tree comparison value
-* !== subject value is definitely not equal to tree comparison value
-* in subject value is present in tree comparison value (tree comparison value must be an array)
-* nin subject value is not present in tree comparison value (tree comparison value must be an array)
-
-Several things are required to use an ODT:
-* The executor (this package)
-* The tree data (provided by you)
-* The decision maker (a default decision maker is included in this package, but you can insert your own if need be)
-
-Depending on the tree data you provide, the executor supports any combination of the following:
-* Binary conditions (conditions that output either true or false)
-* Arbitrary conditions (conditions that output an integer. In other words, more than two outcome branchways are possible)
-* Multi-condition nodes (a single decision node can run multiple conditions)
-
-## Example ##
-
-binary-tree.json
-```json
-{
-  "condition": {
-    "name": "conditionAge",
-    "property": "age",
-    "comparison": {
-      "operation": ">",
-      "value": 40
-    }   
-  },  
-  "branches": [
-    {   
-      "condition": {
-        "name": "conditionAge",
-        "property": "age",
-        "comparison": {
-          "operation": ">",
-          "value": 20
-        }   
-      },  
-      "branches": [
-        {"result": "Leaf A: Aged between 0 and 20"},
-        {"result": "Leaf B: Aged between 21 and 39"}
-      ]   
-    },  
-    {   
-      "condition": {
-        "name": "conditionCountry",
-        "property": "nationality",
-        "comparison": {
-          "operation": "in",
-          "value": ["US", "CA"]
-        }   
-      },  
-      "branches": [
-        {"result": "Leaf C: Over 40 and not from North America"},
-        {"result": "Leaf D: Over 40 and from the North America"}
-      ]   
-    }   
-  ]
-}
-```
-
+Usage looks like this:
 ```js
 var ODT = require('operational-decision-tree')
 
@@ -91,15 +20,140 @@ var person = {
   nationality: 'US'
 }
 
+var DecisionTree = new ODT({
+  makeDecision: {},
+  runOnHit: {}
+})
 
-var DecisionTree = new ODT()
-DecisionTree.run(treeData, person, function (err, result) {
-  if (err) console.error("ERROR", err)
-  console.log("RESULT", result)
+DecisionTree.run(treeData, person, function (err, resultBranchNode) {
+  if (err) console.error(err)
+  console.log("Result", resultBranchNode)
 })
 ```
 
 
-## A Note About Multi-Condition Nodes ##
+Each node can have the following properties:
+```js
+var node = {
+  "decisions": [], // the decisions that will be run for this node in order to produce an output branch
+  "branches": [], // each branch is another node
+  "runOnHit": [], // a list of function names to run when this node is hit.
+  "makeDecision": "" // the name of a function to run instead of the built in comparison function
+}
+```
 
-Multi-condition nodes are useful for reducing the number of nodes needed for specific outcomes. They work well with binary trees, since the decision maker can resolve them with an && operation. However, when paired with arbitrary conditions, you may run into some problems depending on how your arbitrary conditions are setup.
+For each node:
+1. check if 'makeDecision' is set.
+  * true: run a function by this name from corresponding opts object
+  * false: go to #2
+2. ODT runs each comparison in the list and:
+  * if all comparisons are true, then the branch with the same index as this decision is chosen.
+    * if the chosen branch has the 'decisions' property or the 'makeDecisions' property, then return to step 1 and use this branch as the node to test
+    * if not, then the top level callback is triggered with this branch node as the result
+  * if any are false, then return to step 2 and test the next decision 
+
+Once we hit a branch node that doesn't have either the 'decisions' property or the 'makeDecision' property, then the callback is triggered with the branch node as the result.
+
+For each comparison, ODT compares the subject data to the tree data based on the "operation" parameter you pass in the tree. Supported operations are:
+* > subject value is greater than tree comparison value
+* >= subject value is greater than or equal to tree comparison value
+* < subject value is less than tree comparison value
+* <= subject value is less than or equal to tree comparison value
+* == subject value is equal to tree comparison value
+* === subject value is definitely equal to tree comparison value
+* != subject value is not equal to tree comparison value
+* !== subject value is definitely not equal to tree comparison value
+* in subject value is present in tree comparison value (tree comparison value must be an array)
+* nin subject value is not present in tree comparison value (tree comparison value must be an array)
+
+The number of decisions should always be one less than the number of branches. In the event that all decisions come back false, the last branch is chosen.
+
+## Example ##
+
+binary-tree.json
+```json
+{
+  "decisions": [
+    [{  
+      "property": "age",
+      "operation": ">",
+      "value": 40
+    }]  
+  ],  
+  "branches": [
+    {   
+      "runOnHit": [
+        "howOld"
+      ],  
+      "decisions": [
+        [{  
+          "property": "random",
+          "operation": "<",
+          "value": 30
+        }], 
+        [{  
+          "property": "random",
+          "operation": "<",
+          "value": 50
+        }], 
+        [{  
+          "property": "random",
+          "operation": "<",
+          "value": 90
+        }]  
+      ],  
+      "branches": [
+        {"result": "Leaf A: Aged under 40 and random less than 30"},
+        {"result": "Leaf B: Aged under 40 and random between 30 and 49"},
+        {"result": "Leaf C: Aged under 40 and random between 50 and 89"},
+        {"result": "Leaf D: Aged under 40 and random between 90 and 99"}
+      ]   
+    },  
+    {   
+      "decisions": [
+        [{  
+          "property": "nationality",
+          "operation": "in",
+          "value": ["US", "CA"]
+        }]  
+      ],  
+      "branches": [
+        {   
+          "decisions": [
+            [   
+              {   
+              "property": "age",
+              "operation": "<",
+              "value": 60
+              },  
+              {   
+              "property": "gender",
+              "operation": "==",
+              "value": "male"
+              }   
+            ]   
+          ],  
+          "branches": [
+            {"result": "Leaf E: Over 60 or female, and not from US"},
+            {"result": "Leaf F: Male under 60 and not from US"}
+          ]   
+        },  
+        {   
+          "makeDecision": "decideFinalBranch",
+          "decisions": [
+            [{  
+              "property": "percentage"
+            }]  
+          ],  
+          "branches": [
+            {"result": "Leaf G"},
+            {"result": "Leaf H"},
+            {"result": "Leaf I"} 
+          ]   
+        }   
+      ]   
+    }   
+  ]
+}
+```
+
