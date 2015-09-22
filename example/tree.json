@@ -70,7 +70,19 @@
             {"result": "Leaf F: Male under 60 and not from US"}
           ]
         },
-        {"result": "Leaf G: Over 40 and from US"}
+        {
+          "makeDecision": "decideFinalBranch",
+          "decisions": [
+            [{
+              "property": "percentage"
+            }]
+          ],
+          "branches": [
+            {"result": "Leaf G"},
+            {"result": "Leaf H"},
+            {"result": "Leaf I"}
+          ]
+        }
       ]
     }
   ]
