@@ -11,26 +11,23 @@ tape('Test Binary Condition', function (t) {
   var DT = new DTS()
 
   var subject = {
-    value: 1
+    target: 1
   }
 
-  var condition = {
-    name: 'conditionBinary',
-    property: 'value',
-    comparison: {
-      operation: '>',
-      value: 0
-    }
-  }
+  var decision = [{
+        property: 'target',
+        operation: '>',
+        value: 2
+      }]
 
-  DT.testCondition(condition, subject, function (err, result) {
-    t.equal(result, 1, 'Binary condition returns 1')
-    subject.value = 0
-    DT.testCondition(condition, subject, function (err, result) {
-      t.equal(result, 0, 'Binary condition returns 0')
-      t.end()
-    })
-  })
+  var result = DT.runDecisions(0, decision, subject, {})
+  t.equal(result, false, 'Binary condition returns false')
+
+  subject.target = 3
+  var result = DT.runDecisions(0, decision, subject, {})
+  t.equal(result, true, 'Binary condition returns true')
+
+  t.end()
 })
 
 tape('Test Arbitrary Condition', function (t) {
@@ -40,33 +37,39 @@ tape('Test Arbitrary Condition', function (t) {
     random: 85
   }
 
-  var condition = {
-    name: 'conditionArbitrary',
-    property: 'random',
-    comparisons: [
-      {
-      operation: '<',
-      value: 30
-      },
-      {
-      operation: '<',
-      value: 50
-      },
-      {
-      operation: '<',
-      value: 100
-      }
+  var node = {
+    decisions: [
+      [{
+        property: 'random',
+        operation: '<',
+        value: 30
+      }],
+      [{
+        property: 'random',
+        operation: '<',
+        value: 50
+      }],
+      [{
+        property: 'random',
+        operation: '<',
+        value: 100
+      }]
+    ],
+    branches: [
+      'first',
+      'second',
+      'third'
     ]
   }
 
-  DT.testCondition(condition, subject, function (err, result) {
-    t.equal(result, 2, 'Arbitrary condition returns 2')
+  DT.runNode(0, node, subject, {}, function (err, result) {
+    t.equal(result, 'third', 'Node returns third branch')
     subject.random = 35
-    DT.testCondition(condition, subject, function (err, result) {
-      t.equal(result, 1, 'Arbitrary condition returns 1')
+    DT.runNode(0, node, subject, {}, function (err, result) {
+      t.equal(result, 'second', 'Node returns second branch')
       subject.random = 5
-      DT.testCondition(condition, subject, function (err, result) {
-        t.equal(result, 0, 'Arbitrary condition returns 0')
+      DT.runNode(0, node, subject, {}, function (err, result) {
+        t.equal(result, 'first', 'Node returns first branch')
         t.end()
       })
     })
