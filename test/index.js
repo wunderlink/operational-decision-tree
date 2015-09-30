@@ -37,14 +37,15 @@ tape('Test Arbitrary Condition', function (t) {
     random: 85
   }
 
-  var node = [
+  var node = {
+    branches:[
   {
     decisions: [{
         property: 'random',
         operation: '<',
         value: 30
       }],
-    branch: ['first']
+    branch: 'first'
   },
   {
     decisions: [{
@@ -52,7 +53,7 @@ tape('Test Arbitrary Condition', function (t) {
         operation: '<',
         value: 50
       }],
-    branch: ['second']
+    branch: 'second'
   },
   {
     decisions: [{
@@ -60,9 +61,9 @@ tape('Test Arbitrary Condition', function (t) {
         operation: '<',
         value: 100
       }],
-    branch: ['third']
+    branch: 'third'
   }
-  ]
+  ]}
 
   DT.runNode(0, node, subject, {}, function (err, result) {
     t.equal(result, 'third', 'Node returns third branch')

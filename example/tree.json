@@ -1,13 +1,13 @@
-[
-  {
+{
+  "branches": [{
     "decisions": [{
         "property": "age",
         "operation": ">",
         "value": 40
       }],
     "runOnHit":[],
-    "branch": [
-      {
+    "branch": {
+      "branches": [{
         "decisions":
             [{
               "property": "random",
@@ -47,7 +47,8 @@
         "runOnHit":[],
         "branch": [{"result": "Leaf D: Aged under 40 and random between 90 and 99"}]
       }
-    ]
+    ]}
+    
   },
   {
     "decisions": [{
@@ -55,8 +56,8 @@
           "operation": "in",
           "value": ["US", "CA"]
         }],
-    "branch": [
-      {
+    "branch": {
+      "branches": [{
         "decisions": [
             {
               "property": "age",
@@ -73,9 +74,9 @@
       },
       {
         "branch": [{"result": "Leaf G"}]
-      }
-    ]
-  }
-]
+      }]
+    }
+  }]
+}
 
 
