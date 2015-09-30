@@ -14,17 +14,17 @@ tape('Test Binary Condition', function (t) {
     target: 1
   }
 
-  var decision = [{
+  var decisions = [{
         property: 'target',
         operation: '>',
         value: 2
       }]
 
-  var result = DT.runDecisions(0, decision, subject, {})
+  var result = DT.runDecisions(0, decisions, subject, {})
   t.equal(result, false, 'Binary condition returns false')
 
   subject.target = 3
-  var result = DT.runDecisions(0, decision, subject, {})
+  var result = DT.runDecisions(0, decisions, subject, {})
   t.equal(result, true, 'Binary condition returns true')
 
   t.end()
@@ -37,30 +37,32 @@ tape('Test Arbitrary Condition', function (t) {
     random: 85
   }
 
-  var node = {
-    decisions: [
-      [{
+  var node = [
+  {
+    decisions: [{
         property: 'random',
         operation: '<',
         value: 30
       }],
-      [{
+    branch: ['first']
+  },
+  {
+    decisions: [{
         property: 'random',
         operation: '<',
         value: 50
       }],
-      [{
+    branch: ['second']
+  },
+  {
+    decisions: [{
         property: 'random',
         operation: '<',
         value: 100
-      }]
-    ],
-    branches: [
-      'first',
-      'second',
-      'third'
-    ]
+      }],
+    branch: ['third']
   }
+  ]
 
   DT.runNode(0, node, subject, {}, function (err, result) {
     t.equal(result, 'third', 'Node returns third branch')

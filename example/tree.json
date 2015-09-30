@@ -1,78 +1,81 @@
-
-{
-  "decisions": [
-    [{
-      "property": "age",
-      "operation": ">",
-      "value": 40
-    }]
-  ],
-  "branches": [
-    {
-      "runOnHit": [
-        "howOld"
-      ],
-      "decisions": [
-        [{
-          "property": "random",
-          "operation": "<",
-          "value": 30
-        }],
-        [{
-          "property": "random",
-          "operation": "<",
-          "value": 50
-        }],
-        [{
-          "property": "random",
-          "operation": "<",
-          "value": 90
-        }],
-        [{
-          "property": "random",
-          "operation": "<",
-          "value": 100
-        }]
-      ],
-      "branches": [
-        {"result": "Leaf A: Aged under 40 and random less than 30"},
-        {"result": "Leaf B: Aged under 40 and random between 30 and 49"},
-        {"result": "Leaf C: Aged under 40 and random between 50 and 89"},
-        {"result": "Leaf D: Aged under 40 and random between 90 and 99"}
-      ]
-    },
-    {
-      "decisions": [
-        [{
+[
+  {
+    "decisions": [{
+        "property": "age",
+        "operation": ">",
+        "value": 40
+      }],
+    "runOnHit":[],
+    "branch": [
+      {
+        "decisions":
+            [{
+              "property": "random",
+              "operation": "<",
+              "value": 30
+            }],
+        "runOnHit":["howOld"],
+        "branch": [{"result": "Leaf A: Aged under 40 and random less than 30"}]
+      },
+      {
+        "decisions":
+            [{
+              "property": "random",
+              "operation": "<",
+              "value": 50
+            }],
+        "runOnHit":[],
+        "branch": [{"result": "Leaf B: Aged under 40 and random between 30 and 49"}]
+      },
+      {
+        "decisions":
+            [{
+              "property": "random",
+              "operation": "<",
+              "value": 90
+            }],
+        "runOnHit":[],
+        "branch": [{"result": "Leaf C: Aged under 40 and random between 50 and 89"}]
+      },
+      {
+        "decisions":
+            [{
+              "property": "random",
+              "operation": "<",
+              "value": 100
+            }],
+        "runOnHit":[],
+        "branch": [{"result": "Leaf D: Aged under 40 and random between 90 and 99"}]
+      }
+    ]
+  },
+  {
+    "decisions": [{
           "property": "nationality",
           "operation": "in",
           "value": ["US", "CA"]
-        }]
-      ],
-      "branches": [
-        {
-          "decisions": [
-            [
-              {
+        }],
+    "branch": [
+      {
+        "decisions": [
+            {
               "property": "age",
               "operation": "<",
               "value": 60
-              },
-              {
+            },
+            {
               "property": "gender",
               "operation": "==",
               "value": "male"
-              }
-            ]
+            }
           ],
-          "branches": [
-            {"result": "Leaf E: Over 60 or female, and not from US"},
-            {"result": "Leaf F: Male under 60 and not from US"}
-          ]
-        },
-        {"result": "Leaf G"},
-      ]
-    }
-  ]
-}
+        "branch": [{"result": "Leaf E: Over 60 or female, and not from US"}]
+      },
+      {
+        "branch": [{"result": "Leaf G"}]
+      }
+    ]
+  }
+]
+
 
