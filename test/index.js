@@ -30,6 +30,37 @@ tape('Test Binary Condition', function (t) {
   t.end()
 })
 
+tape('Test Decision with Multiple Conditions', function (t) {
+  var DT = new DTS()
+
+  var subject = {
+    testFirst: 1,
+    testSecond: 1
+  }
+
+  var decisions = [
+      {
+        property: 'testFirst',
+        operation: '>',
+        value: 0
+      },
+      {
+        property: 'testSecond',
+        operation: '>',
+        value: 2
+      }
+    ]
+
+  var result = DT.runDecisions(0, decisions, subject, {})
+  t.equal(result, false, 'Multiple conditions return false')
+
+  subject.testSecond = 3
+  var result = DT.runDecisions(0, decisions, subject, {})
+  t.equal(result, true, 'Multiple conditions returns true')
+
+  t.end()
+})
+
 tape('Test Arbitrary Condition', function (t) {
   var DT = new DTS()
 
@@ -38,142 +69,97 @@ tape('Test Arbitrary Condition', function (t) {
   }
 
   var node = {
-    branches:[
-  {
-    decisions: [{
-        property: 'random',
-        operation: '<',
-        value: 30
-      }],
-    branch: 'first'
-  },
-  {
-    decisions: [{
-        property: 'random',
-        operation: '<',
-        value: 50
-      }],
-    branch: 'second'
-  },
-  {
-    decisions: [{
-        property: 'random',
-        operation: '<',
-        value: 100
-      }],
-    branch: 'third'
+    branches: [
+      {
+        decisions: [{
+            property: 'random',
+            operation: '<',
+            value: 30
+          }],
+        node: 'first'
+      },
+      {
+        decisions: [{
+            property: 'random',
+            operation: '<',
+            value: 50
+          }],
+        node: 'second'
+      },
+      {
+        decisions: [{
+            property: 'random',
+            operation: '<',
+            value: 100
+          }],
+        node: 'third'
+      }
+    ]
   }
-  ]}
 
   DT.runNode(0, node, subject, {}, function (err, result) {
-    t.equal(result, 'third', 'Node returns third branch')
+    t.equal(result, 'third', 'Node returns third node')
     subject.random = 35
     DT.runNode(0, node, subject, {}, function (err, result) {
-      t.equal(result, 'second', 'Node returns second branch')
+      t.equal(result, 'second', 'Node returns second node')
       subject.random = 5
       DT.runNode(0, node, subject, {}, function (err, result) {
-        t.equal(result, 'first', 'Node returns first branch')
+        t.equal(result, 'first', 'Node returns first node')
         t.end()
       })
     })
   })
 })
 
-tape('Test Condition With Opts', function (t) {
+
+tape('Test Deep Tree', function (t) {
   var DT = new DTS()
 
   var subject = {
-    somevalue: 1
-  }
-
-  var condition = {
-    name: 'conditionOpts',
-    property: 'somevalue',
-    comparison: {
-      operation: '<',
-      value: 2
-    }
-  }
-
-  DT.testCondition(condition, subject, function (err, result) {
-    t.ok(result, 'Condition with opts returns true')
-    subject.somevalue = 3
-    DT.testCondition(condition, subject, function (err, result) {
-      t.notOk(result, 'Condition with opts returns false')
-      t.end()
-    })
-  })
-})
-
-tape('Test runNode', function (t) {
-  var DT = new DTS()
-
-  var subject = {
-    age: 37
+    random: 29,
+    age: 16
   }
 
   var node = {
-    condition: {
-      name: "conditionAge",
-      property: 'age',
-      comparison: {
-        operation: ">",
-        value: 20
-      }   
-    },  
     branches: [
-      {   
-        result: "Leaf A: Aged under 20" 
-      },  
-      {   
-        result: "Leaf B: Aged 21 or over" 
-      }   
-    ]   
+      {
+        decisions: [{
+            property: 'random',
+            operation: '<',
+            value: 30
+          }],
+        node: {
+          branches: [
+            {
+              decisions: [{
+                  property: 'age',
+                  operation: '<',
+                  value: 18
+                }],
+              node: 'underage'
+            },
+            'adult'
+          ]
+        }
+      },
+      {
+        decisions: [{
+            property: 'random',
+            operation: '<',
+            value: 50
+          }],
+        node: 'second'
+      }
+    ]
   }
 
-  DT.runNode(node, subject, function (err, result) {
-    t.ok(result, 'Leaf B: Aged 21 or over')
-    subject.age = 8
-    DT.runNode(node, subject, function (err, result) {
-      t.ok(result, 'Leaf A: Aged under 20')
+  DT.runNode(0, node, subject, {}, function (err, result) {
+    t.equal(result, 'underage', 'Returns deep node')
+    subject.age = 21
+    DT.runNode(0, node, subject, {}, function (err, result) {
+      t.equal(result, 'adult', 'Returns simple node')
       t.end()
     })
-  })
-})
-
-tape('Test defaultDecider', function (t) {
-  var DT = new DTS()
-
-  var result
-
-  result = DT.defaultDecider(true)
-  t.equal(result, 1, 'Decider properly handles "true"')
-
-  result = DT.defaultDecider(false)
-  t.equal(result, 0, 'Decider properly handles "false"')
-
-  result = DT.defaultDecider(1)
-  t.equal(result, 1, 'Decider properly handles "1"')
-
-  result = DT.defaultDecider(0)
-  t.equal(result, 0, 'Decider properly handles "0"')
-
-  result = DT.defaultDecider(2)
-  t.equal(result, 2, 'Decider properly handles "2"')
-
-  result = DT.defaultDecider('Oops')
-  t.equal(result instanceof Error, new Error() instanceof Error, 'Decider properly returns an error on strings')
-
-  t.end()
-})
-
-
-tape('Test countConditions', function (t) {
-  var DT = new DTS()
-  DT.countConditions(sampleTree, function(err, conditionCount) {
-    t.equal(1, conditionCount.conditionPercent, 'countConditions returned the correct number of "conditionPercent"')
-    t.equal(3, conditionCount.conditionAsync, 'countConditions returned the correct number of "conditionAsync"')
-    t.end()
   })
 })
 

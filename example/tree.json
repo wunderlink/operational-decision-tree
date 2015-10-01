@@ -6,7 +6,7 @@
         "value": 40
       }],
     "runOnHit":[],
-    "branch": {
+    "node": {
       "branches": [{
         "decisions":
             [{
@@ -15,7 +15,7 @@
               "value": 30
             }],
         "runOnHit":["howOld"],
-        "branch": [{"result": "Leaf A: Aged under 40 and random less than 30"}]
+        "node": [{"result": "Leaf A: Aged under 40 and random less than 30"}]
       },
       {
         "decisions":
@@ -25,7 +25,7 @@
               "value": 50
             }],
         "runOnHit":[],
-        "branch": [{"result": "Leaf B: Aged under 40 and random between 30 and 49"}]
+        "node": [{"result": "Leaf B: Aged under 40 and random between 30 and 49"}]
       },
       {
         "decisions":
@@ -35,7 +35,7 @@
               "value": 90
             }],
         "runOnHit":[],
-        "branch": [{"result": "Leaf C: Aged under 40 and random between 50 and 89"}]
+        "node": [{"result": "Leaf C: Aged under 40 and random between 50 and 89"}]
       },
       {
         "decisions":
@@ -45,7 +45,7 @@
               "value": 100
             }],
         "runOnHit":[],
-        "branch": [{"result": "Leaf D: Aged under 40 and random between 90 and 99"}]
+        "node": [{"result": "Leaf D: Aged under 40 and random between 90 and 99"}]
       }
     ]}
     
@@ -56,7 +56,7 @@
           "operation": "in",
           "value": ["US", "CA"]
         }],
-    "branch": {
+    "node": {
       "branches": [{
         "decisions": [
             {
@@ -70,10 +70,10 @@
               "value": "male"
             }
           ],
-        "branch": [{"result": "Leaf E: Over 60 or female, and not from US"}]
+        "node": [{"result": "Leaf E: Over 60 or female, and not from US"}]
       },
       {
-        "branch": [{"result": "Leaf G"}]
+        "node": [{"result": "Leaf G"}]
       }]
     }
   }]
