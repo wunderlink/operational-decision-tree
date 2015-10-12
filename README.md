@@ -25,7 +25,7 @@ var DecisionTree = new ODT({
   runOnHit: {}
 })
 
-DecisionTree.run(treeData, person, function (err, resultBranchNode) {
+DecisionTree.run(treeData, person, null, function (err, resultBranchNode) {
   if (err) console.error(err)
   console.log("Result", resultBranchNode)
 })
